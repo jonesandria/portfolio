@@ -1,35 +1,22 @@
 ---
-// Galerie photo — placeholders.
-// Pour utiliser de vraies images : déposez-les dans public/photos/
-// et ajoutez `image: '/photos/xxx.jpg'` à l'élément voulu.
-interface Shot {
-  category: string;
-  h: number; // hauteur du placeholder (masonry)
-  image?: string;
-}
+import { photos, photoFilters } from '../data/photography';
 
-const gallery: Shot[] = [
-  { category: 'Portrait', h: 260 },
-  { category: 'Voyage', h: 180 },
-  { category: 'Nature', h: 200 },
-  { category: 'Street', h: 260 },
-  { category: 'Détails', h: 170 },
-  { category: 'Portrait', h: 220 },
-  { category: 'Voyage', h: 280 },
-  { category: 'Street', h: 190 },
-];
-
-const filters = ['Tous', 'Portrait', 'Voyage', 'Nature', 'Street', 'Détails'];
+// Photo affichée au premier rendu (le JS pilote ensuite via activeIndex).
+const first = photos[0];
 ---
 
 <section id="photography" class="border-t border-line px-5 py-16 sm:px-8 lg:px-14" data-reveal>
   <p class="mb-7 font-playfair text-sm italic text-gold-text">— Photographie —</p>
 
-  <div class="mb-8 flex flex-wrap items-center gap-9">
-    <div
-      class="flex h-[320px] min-w-[260px] flex-[1.3_1_400px] items-center justify-center overflow-hidden rounded-[18px] border border-line bg-surface-soft"
-    >
-      <span class="font-inter text-[13px] text-muted">Photo phare</span>
+  <div class="mb-10 flex flex-wrap items-center gap-9">
+    <!-- Photo phare : suit la photo active du carousel (aucune animation propre) -->
+    <div class="h-[320px] min-w-[260px] flex-[1.3_1_400px] overflow-hidden rounded-[18px] border border-line bg-surface-soft">
+      <img
+        src={first.src}
+        alt={first.title}
+        data-featured
+        class="h-full w-full object-cover transition-opacity duration-300 ease-in-out motion-reduce:transition-none"
+      />
     </div>
     <div class="flex flex-[1_1_260px] flex-col gap-3.5">
       <p class="font-playfair text-[19px] italic leading-[1.55] text-ink">
@@ -39,10 +26,10 @@ const filters = ['Tous', 'Portrait', 'Voyage', 'Nature', 'Street', 'Détails'];
     </div>
   </div>
 
-  <!-- Filtres -->
-  <div class="mb-6 flex flex-wrap gap-2.5" data-gallery-filters>
+  <!-- Filtres (mêmes catégories → même carousel) -->
+  <div class="mb-6 flex flex-wrap gap-2.5" data-filters>
     {
-      filters.map((label, i) => (
+      photoFilters.map((label, i) => (
         <button
           type="button"
           data-filter={label}
@@ -57,50 +44,227 @@ const filters = ['Tous', 'Portrait', 'Voyage', 'Nature', 'Street', 'Détails'];
     }
   </div>
 
-  <!-- Masonry -->
-  <div class="[column-gap:16px] [column-width:230px]" data-gallery>
-    {
-      gallery.map((ph) => (
-        <div
-          data-category={ph.category}
-          class="mb-4 overflow-hidden rounded-[14px] border border-line bg-surface-soft [break-inside:avoid]"
-          style={`height:${ph.h}px`}
-        >
-          {ph.image ? (
-            <img src={ph.image} alt={ph.category} class="h-full w-full object-cover" loading="lazy" />
-          ) : (
-            <div class="flex h-full w-full items-center justify-center font-inter text-[12px] text-muted">
-              {ph.category}
-            </div>
-          )}
-        </div>
-      ))
-    }
+  <!-- ============ CAROUSEL 3D (activeIndex uniquement) ============ -->
+  <div
+    class="relative select-none [perspective:1200px]"
+    data-carousel
+    tabindex="0"
+    role="group"
+    aria-roledescription="carousel"
+    aria-label="Galerie photo"
+  >
+    <div class="relative mx-auto h-[clamp(320px,54vh,440px)] [transform-style:preserve-3d]" data-stage>
+      {
+        photos.map((photo) => (
+          <figure
+            data-card
+            data-category={photo.category}
+            data-src={photo.src}
+            class="absolute left-1/2 top-1/2 m-0 h-full w-[clamp(240px,72vw,340px)] overflow-hidden rounded-[18px] border border-line bg-surface-soft opacity-0 transition-[transform,opacity,filter,box-shadow] duration-500 ease-out will-change-transform motion-reduce:transition-none"
+          >
+            <img src={photo.src} alt={photo.title} loading="lazy" class="pointer-events-none h-full w-full object-cover" />
+            {/* Reflet « mirror glass » très subtil (renforcé sur les cartes latérales) */}
+            <span data-glass class="pointer-events-none absolute inset-0 rounded-[18px] bg-gradient-to-br from-white/10 via-transparent to-white/5 opacity-0 transition-opacity duration-500" />
+            <span class="absolute left-3 top-3 z-10 rounded-full border border-white/15 bg-black/45 px-2.5 py-1 font-sora text-[10px] uppercase tracking-[0.06em] text-white backdrop-blur-sm">
+              {photo.category}
+            </span>
+            {/* Légende — visible uniquement sur la carte active */}
+            <figcaption class="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-black/25 to-transparent p-4 opacity-0 transition-opacity duration-500 data-[active]:opacity-100">
+              <div class="font-sora text-[16px] font-semibold text-white">{photo.title}</div>
+              <p class="mt-1 font-inter text-[12.5px] leading-[1.5] text-white/85">{photo.description}</p>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+
+    <button
+      type="button"
+      data-prev
+      aria-label="Photo précédente"
+      class="absolute left-1 top-1/2 z-40 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-bg/85 text-lg text-ink backdrop-blur transition-colors hover:border-gold sm:left-3"
+    >
+      &lsaquo;
+    </button>
+    <button
+      type="button"
+      data-next
+      aria-label="Photo suivante"
+      class="absolute right-1 top-1/2 z-40 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-bg/85 text-lg text-ink backdrop-blur transition-colors hover:border-gold sm:right-3"
+    >
+      &rsaquo;
+    </button>
   </div>
+
+  <p class="mt-4 text-center font-inter text-[11px] text-muted">
+    Utilisez les flèches, le clavier ou glissez pour parcourir la galerie.
+  </p>
 </section>
 
 <script is:inline>
   (function () {
-    var filterBar = document.querySelector('[data-gallery-filters]');
-    var gallery = document.querySelector('[data-gallery]');
-    if (!filterBar || !gallery) return;
-    var buttons = filterBar.querySelectorAll('[data-filter]');
-    var items = gallery.querySelectorAll('[data-category]');
-    buttons.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var value = btn.getAttribute('data-filter');
-        buttons.forEach(function (b) {
-          var active = b === btn;
-          b.classList.toggle('border-gold', active);
-          b.classList.toggle('text-gold-text', active);
-          b.classList.toggle('border-transparent', !active);
-          b.classList.toggle('text-muted', !active);
-        });
-        items.forEach(function (item) {
-          var show = value === 'Tous' || item.getAttribute('data-category') === value;
-          item.style.display = show ? '' : 'none';
-        });
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var mobile = window.matchMedia('(max-width: 640px)');
+
+    var carousel = document.querySelector('[data-carousel]');
+    var stage = document.querySelector('[data-stage]');
+    var featured = document.querySelector('[data-featured]');
+    var filterBar = document.querySelector('[data-filters]');
+    if (!carousel || !stage) return;
+
+    var allCards = Array.prototype.slice.call(stage.querySelectorAll('[data-card]'));
+    var visible = allCards.slice();
+    var active = 0; // === activeIndex (seul état de position)
+
+    // Ombres / contours par état (subtils, cohérents dark & light).
+    var SHADOW_ACTIVE = '0 24px 60px -18px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(214,180,106,0.55)';
+    var SHADOW_SIDE =
+      '0 0 22px rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.16), inset 0 1px 10px rgba(255,255,255,0.07)';
+
+    function layout() {
+      var isMobile = mobile.matches;
+      var step = isMobile ? 52 : 60; // décalage horizontal (% largeur de carte)
+      var depth = isMobile ? 60 : 130; // recul en Z
+      var rot = isMobile ? 10 : 22; // inclinaison
+
+      visible.forEach(function (card, i) {
+        var offset = i - active;
+        var abs = Math.abs(offset);
+        var glass = card.querySelector('[data-glass]');
+        var caption = card.querySelector('figcaption');
+
+        if (abs > 2) {
+          card.style.opacity = '0';
+          card.style.pointerEvents = 'none';
+          card.style.transform = 'translate(-50%,-50%) translateX(' + (offset < 0 ? -200 : 200) + '%) scale(0.6)';
+          card.removeAttribute('data-active');
+          caption.removeAttribute('data-active');
+          return;
+        }
+
+        card.style.pointerEvents = 'auto';
+        card.style.zIndex = String(50 - abs);
+        card.style.transform =
+          'translate(-50%,-50%)' +
+          ' translateX(' + offset * step + '%)' +
+          ' translateZ(' + -abs * depth + 'px)' +
+          ' rotateY(' + offset * -rot + 'deg)' +
+          ' scale(' + (1 - abs * 0.14) + ')';
+
+        if (offset === 0) {
+          // Carte active : nette, lumineuse, ombre premium.
+          card.style.filter = 'none';
+          card.style.opacity = '1';
+          card.style.boxShadow = SHADOW_ACTIVE;
+          if (glass) glass.style.opacity = '0';
+          card.setAttribute('data-active', '');
+          caption.setAttribute('data-active', '');
+        } else {
+          // Cartes latérales : flou léger, plus sombres, glow + contour glass.
+          card.style.filter = 'blur(' + (abs === 1 ? 1.6 : 2) + 'px) brightness(' + (abs === 1 ? 0.82 : 0.7) + ')';
+          card.style.opacity = abs === 1 ? '0.9' : '0.78';
+          card.style.boxShadow = SHADOW_SIDE;
+          if (glass) glass.style.opacity = abs === 1 ? '0.55' : '0.8';
+          card.removeAttribute('data-active');
+          caption.removeAttribute('data-active');
+        }
+      });
+
+      // La photo phare suit la photo active (pas d'animation indépendante).
+      var current = visible[active];
+      if (featured && current) {
+        var src = current.getAttribute('data-src');
+        if (featured.getAttribute('src') !== src) {
+          featured.style.opacity = '0';
+          setTimeout(function () {
+            featured.src = src;
+            featured.alt = current.querySelector('img').alt;
+            featured.style.opacity = '1';
+          }, reduce ? 0 : 180);
+        }
+      }
+    }
+
+    function setActive(i) {
+      var n = visible.length;
+      active = ((i % n) + n) % n;
+      layout();
+    }
+
+    // ------- Auto-slide (6–8 s) -------
+    var timer = null;
+    function nextDelay() { return 6000 + Math.random() * 2000; }
+    function play() {
+      if (reduce) return;
+      stop();
+      timer = setTimeout(function () { setActive(active + 1); play(); }, nextDelay());
+    }
+    function stop() { clearTimeout(timer); }
+    function pauseThenResume() {
+      stop();
+      if (reduce) return;
+      timer = setTimeout(function () { setActive(active + 1); play(); }, 8000);
+    }
+
+    // ------- Contrôles -------
+    var prev = carousel.querySelector('[data-prev]');
+    var next = carousel.querySelector('[data-next]');
+    if (prev) prev.addEventListener('click', function () { setActive(active - 1); pauseThenResume(); });
+    if (next) next.addEventListener('click', function () { setActive(active + 1); pauseThenResume(); });
+
+    carousel.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') { setActive(active - 1); pauseThenResume(); }
+      else if (e.key === 'ArrowRight') { setActive(active + 1); pauseThenResume(); }
+    });
+
+    allCards.forEach(function (card) {
+      card.addEventListener('click', function () {
+        var i = visible.indexOf(card);
+        if (i >= 0 && i !== active) { setActive(i); pauseThenResume(); }
       });
     });
+
+    carousel.addEventListener('mouseenter', stop);
+    carousel.addEventListener('mouseleave', play);
+
+    var startX = null;
+    carousel.addEventListener('pointerdown', function (e) { startX = e.clientX; stop(); });
+    carousel.addEventListener('pointerup', function (e) {
+      if (startX === null) return;
+      var dx = e.clientX - startX;
+      if (Math.abs(dx) > 40) { setActive(active + (dx < 0 ? 1 : -1)); }
+      startX = null;
+      pauseThenResume();
+    });
+    carousel.addEventListener('pointercancel', function () { startX = null; play(); });
+
+    // ------- Filtres : même carousel, sous-ensemble de cartes -------
+    if (filterBar) {
+      var buttons = filterBar.querySelectorAll('[data-filter]');
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var value = btn.getAttribute('data-filter');
+          buttons.forEach(function (b) {
+            var on = b === btn;
+            b.classList.toggle('border-gold', on);
+            b.classList.toggle('text-gold-text', on);
+            b.classList.toggle('border-transparent', !on);
+            b.classList.toggle('text-muted', !on);
+          });
+          visible = allCards.filter(function (card) {
+            return value === 'Tous' || card.getAttribute('data-category') === value;
+          });
+          allCards.forEach(function (card) {
+            card.style.display = visible.indexOf(card) >= 0 ? '' : 'none';
+          });
+          setActive(0);
+          pauseThenResume();
+        });
+      });
+    }
+
+    window.addEventListener('resize', layout);
+    setActive(0);
+    play();
   })();
 </script>
