@@ -27,11 +27,11 @@ export interface Social {
 }
 
 export const socials: Social[] = [
-  { key: 'whatsapp', label: 'Me contacter sur WhatsApp', href: 'https://wa.me/26134375459' },
+  { key: 'whatsapp', label: 'Me contacter sur WhatsApp', href: 'https://wa.me/261343754159' },
   { key: 'github', label: 'github.com/jonesandria', href: 'https://github.com/jonesandria' },
-  { key: 'linkedin', label: 'LinkedIn — Andrianina Jonès', href: '#', pending: true },
-  { key: 'facebook', label: 'Facebook', href: '#', pending: true },
-  { key: 'instagram', label: 'Instagram', href: '#', pending: true },
+  { key: 'linkedin', label: 'LinkedIn — Andrianina Jonès', href: 'https://www.linkedin.com/in/jonès-andrianina-0b06b6330' },
+  { key: 'facebook', label: 'Facebook', href: 'https://www.facebook.com/share/1HFBt1nqyA/?mibextid=wwXIfr' },
+  { key: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/andrianinajones/'},
 ];
 
 // Accès direct par clé (pratique dans les composants).
