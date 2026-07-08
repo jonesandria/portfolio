@@ -10,11 +10,14 @@ const photosZip = photos.map((p, i) => ({ ...p, en: enData.photography[i] }));
   <p class="mb-7 font-playfair text-sm italic text-gold-text" data-en={ui.eyebrow.photography}>— Photographie —</p>
 
   <div class="mb-8 flex flex-wrap items-center gap-8">
-    <!-- Featured : fond flouté + image entière (object-contain) + overlay -->
-    <div class="feat-frame relative h-[clamp(260px,42vh,420px)] min-w-[260px] flex-[1.3_1_420px] overflow-hidden rounded-[20px] border border-line">
-      <img data-featured-bg src={first.src} alt="" aria-hidden="true" class="absolute inset-0 h-full w-full scale-110 object-cover blur-2xl" />
-      <span class="feat-overlay pointer-events-none absolute inset-0" aria-hidden="true"></span>
-      <img src={first.src} alt={first.title} data-featured class="absolute inset-0 z-10 m-auto max-h-full max-w-full object-contain p-3 transition-opacity duration-300 motion-reduce:transition-none" />
+    <!-- Featured : une seule image propre, liée à activeIndex -->
+    <div class="feat-frame relative h-[300px] min-w-[260px] flex-[1.2_1_380px] overflow-hidden rounded-[20px] border border-line sm:h-[320px] lg:h-[340px]">
+      <img
+        src={first.src}
+        alt={first.title}
+        data-featured
+        class="h-full w-full object-cover object-center transition-opacity duration-300 ease-in-out motion-reduce:transition-none"
+      />
     </div>
     <div class="flex flex-[1_1_260px] flex-col gap-3.5">
       <p class="font-playfair text-[19px] italic leading-[1.55] text-ink" data-en={ui.photography.quote}>
@@ -24,7 +27,7 @@ const photosZip = photos.map((p, i) => ({ ...p, en: enData.photography[i] }));
     </div>
   </div>
 
-  <div class="mb-4 flex flex-wrap gap-2.5" data-filters>
+  <div class="mb-3 flex flex-wrap gap-2.5" data-filters>
     {
       photoFilters.map((label, i) => (
         <button
@@ -42,12 +45,12 @@ const photosZip = photos.map((p, i) => ({ ...p, en: enData.photography[i] }));
     }
   </div>
 
-  <!-- Carousel 3D — piloté par activeIndex (pas de scroll, pas de clip des cartes) -->
-  <div class="relative mx-auto max-w-[1100px] select-none py-4 [perspective:1300px]" data-carousel tabindex="0" role="group" aria-roledescription="carousel" aria-label="Galerie photo">
-    <div class="relative mx-auto h-[clamp(300px,48vh,440px)] [transform-style:preserve-3d]" data-stage>
+  <!-- Carousel 3D — activeIndex uniquement, compact, cartes jamais coupées -->
+  <div class="relative mx-auto max-w-[1000px] select-none pb-6 pt-2 [perspective:1300px]" data-carousel tabindex="0" role="group" aria-roledescription="carousel" aria-label="Galerie photo">
+    <div class="relative mx-auto h-[clamp(260px,40vh,380px)] [transform-style:preserve-3d]" data-stage>
       {
         photosZip.map((photo) => (
-          <figure data-card data-category={photo.category} data-src={photo.src} class="absolute left-1/2 top-1/2 m-0 h-full w-[clamp(230px,68vw,320px)] overflow-hidden rounded-[18px] border border-line bg-surface-soft opacity-0 shadow-xl transition-[transform,opacity,filter] duration-500 ease-out will-change-transform motion-reduce:transition-none">
+          <figure data-card data-category={photo.category} data-src={photo.src} class="absolute left-1/2 top-1/2 m-0 h-full w-[clamp(210px,64vw,300px)] overflow-hidden rounded-[18px] border border-line bg-surface-soft opacity-0 shadow-xl transition-[transform,opacity,filter] duration-500 ease-out will-change-transform motion-reduce:transition-none">
             <img src={photo.src} alt={photo.title} loading="lazy" class="pointer-events-none h-full w-full object-cover object-center" />
             <span class="absolute left-3 top-3 rounded-full border border-white/15 bg-black/45 px-2.5 py-1 font-sora text-[10px] uppercase tracking-[0.06em] text-white backdrop-blur-sm" data-en={photo.en.category}>{photo.category}</span>
             <figcaption class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent p-4 opacity-0 transition-opacity duration-500 data-[active]:opacity-100">
@@ -58,30 +61,20 @@ const photosZip = photos.map((p, i) => ({ ...p, en: enData.photography[i] }));
         ))
       }
     </div>
-    <button type="button" data-prev aria-label="Photo précédente" class="absolute left-1 top-1/2 z-40 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-bg/85 text-lg text-ink backdrop-blur transition-colors hover:border-gold sm:left-4">&lsaquo;</button>
-    <button type="button" data-next aria-label="Photo suivante" class="absolute right-1 top-1/2 z-40 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-bg/85 text-lg text-ink backdrop-blur transition-colors hover:border-gold sm:right-4">&rsaquo;</button>
+    <button type="button" data-prev aria-label="Photo précédente" class="absolute left-0 top-1/2 z-40 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-bg/85 text-lg text-ink backdrop-blur transition-colors hover:border-gold sm:left-2">&lsaquo;</button>
+    <button type="button" data-next aria-label="Photo suivante" class="absolute right-0 top-1/2 z-40 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-bg/85 text-lg text-ink backdrop-blur transition-colors hover:border-gold sm:right-2">&rsaquo;</button>
   </div>
 
-  <p class="mt-3 text-center font-inter text-[11px] text-muted" data-en={ui.photography.hint}>Utilisez les flèches, le clavier ou glissez pour parcourir la galerie.</p>
+  <p class="mt-2 text-center font-inter text-[11px] text-muted" data-en={ui.photography.hint}>Utilisez les flèches, le clavier ou glissez pour parcourir la galerie.</p>
 </section>
 
 <style>
   .feat-frame {
     background: var(--surface-soft);
-    box-shadow: 0 20px 50px -24px rgba(0, 0, 0, 0.55);
-  }
-  .feat-overlay {
-    background: linear-gradient(to top, rgba(11, 18, 32, 0.55), rgba(11, 18, 32, 0.12) 55%, transparent);
+    box-shadow: 0 18px 44px -24px rgba(0, 0, 0, 0.5);
   }
   :global([data-theme='light']) .feat-frame {
-    background: linear-gradient(140deg, #f4efe2, #ffffff);
-    box-shadow: 0 18px 40px -26px rgba(0, 0, 0, 0.3);
-  }
-  :global([data-theme='light']) .feat-overlay {
-    background: linear-gradient(to top, rgba(248, 245, 237, 0.6), rgba(248, 245, 237, 0.15) 55%, transparent);
-  }
-  :global([data-theme='light']) [data-featured-bg] {
-    opacity: 0.5;
+    box-shadow: 0 16px 36px -26px rgba(0, 0, 0, 0.28);
   }
 </style>
 
@@ -92,7 +85,6 @@ const photosZip = photos.map((p, i) => ({ ...p, en: enData.photography[i] }));
     var carousel = document.querySelector('[data-carousel]');
     var stage = document.querySelector('[data-stage]');
     var featured = document.querySelector('[data-featured]');
-    var featuredBg = document.querySelector('[data-featured-bg]');
     var filterBar = document.querySelector('[data-filters]');
     if (!carousel || !stage) return;
     var allCards = Array.prototype.slice.call(stage.querySelectorAll('[data-card]'));
@@ -101,7 +93,7 @@ const photosZip = photos.map((p, i) => ({ ...p, en: enData.photography[i] }));
 
     function layout() {
       var isMobile = mobile.matches;
-      var step = isMobile ? 52 : 58, depth = isMobile ? 60 : 120, rot = isMobile ? 10 : 20;
+      var step = isMobile ? 50 : 56, depth = isMobile ? 55 : 110, rot = isMobile ? 9 : 18;
       visible.forEach(function (card, i) {
         var offset = i - active, abs = Math.abs(offset);
         var caption = card.querySelector('figcaption');
@@ -124,13 +116,10 @@ const photosZip = photos.map((p, i) => ({ ...p, en: enData.photography[i] }));
         var src = current.getAttribute('data-src');
         if (featured.getAttribute('src') !== src) {
           featured.style.opacity = '0';
-          if (featuredBg) featuredBg.style.opacity = '0';
           setTimeout(function () {
             featured.src = src;
             featured.alt = current.querySelector('img').alt;
-            if (featuredBg) featuredBg.src = src;
             featured.style.opacity = '1';
-            if (featuredBg) featuredBg.style.opacity = '';
           }, reduce ? 0 : 180);
         }
       }
