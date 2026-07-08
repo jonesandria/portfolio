@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Timeline from '../components/Timeline.astro';
+import Experiences from '../components/Experiences.astro';
+import Projects from '../components/Projects.astro';
+import Skills from '../components/Skills.astro';
+import Certifications from '../components/Certifications.astro';
+import Photography from '../components/Photography.astro';
+import Languages from '../components/Languages.astro';
+import Values from '../components/Values.astro';
+import Contact from '../components/Contact.astro';
+import { profile } from '../data/profile';
+---
+
+<BaseLayout>
+  <Navbar />
+  <main>
+    <Hero />
+    <About />
+    <Timeline />
+    <Experiences />
+    <Projects />
+    <Skills />
+    <Certifications />
+    <Photography />
+    <Languages />
+    <Values />
+    <Contact />
+  </main>
+
+  <footer
+    class="flex flex-wrap justify-between gap-2 border-t border-line bg-surface px-5 py-[22px] font-inter text-[11.5px] text-muted sm:px-8 lg:px-14"
+  >
+    <span>© {profile.copyrightYear} {profile.firstName} {profile.lastName}</span>
+    <a href="#hero" class="text-muted transition-colors hover:text-gold-text">Retour en haut ↑</a>
+  </footer>
+</BaseLayout>

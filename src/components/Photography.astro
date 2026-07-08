@@ -1,0 +1,106 @@
+---
+// Galerie photo — placeholders.
+// Pour utiliser de vraies images : déposez-les dans public/photos/
+// et ajoutez `image: '/photos/xxx.jpg'` à l'élément voulu.
+interface Shot {
+  category: string;
+  h: number; // hauteur du placeholder (masonry)
+  image?: string;
+}
+
+const gallery: Shot[] = [
+  { category: 'Portrait', h: 260 },
+  { category: 'Voyage', h: 180 },
+  { category: 'Nature', h: 200 },
+  { category: 'Street', h: 260 },
+  { category: 'Détails', h: 170 },
+  { category: 'Portrait', h: 220 },
+  { category: 'Voyage', h: 280 },
+  { category: 'Street', h: 190 },
+];
+
+const filters = ['Tous', 'Portrait', 'Voyage', 'Nature', 'Street', 'Détails'];
+---
+
+<section id="photography" class="border-t border-line px-5 py-16 sm:px-8 lg:px-14" data-reveal>
+  <p class="mb-7 font-playfair text-sm italic text-gold-text">— Photographie —</p>
+
+  <div class="mb-8 flex flex-wrap items-center gap-9">
+    <div
+      class="flex h-[320px] min-w-[260px] flex-[1.3_1_400px] items-center justify-center overflow-hidden rounded-[18px] border border-line bg-surface-soft"
+    >
+      <span class="font-inter text-[13px] text-muted">Photo phare</span>
+    </div>
+    <div class="flex flex-[1_1_260px] flex-col gap-3.5">
+      <p class="font-playfair text-[19px] italic leading-[1.55] text-ink">
+        « La photographie permet de capturer des émotions, des moments et des histoires. »
+      </p>
+      <p class="font-inter text-[12.5px] text-muted">Canon EOS Rebel T3 · 18–55mm · 80–200mm</p>
+    </div>
+  </div>
+
+  <!-- Filtres -->
+  <div class="mb-6 flex flex-wrap gap-2.5" data-gallery-filters>
+    {
+      filters.map((label, i) => (
+        <button
+          type="button"
+          data-filter={label}
+          class:list={[
+            'border-b-2 pb-1.5 font-sora text-[11.5px] transition-colors',
+            i === 0 ? 'border-gold text-gold-text' : 'border-transparent text-muted hover:text-ink',
+          ]}
+        >
+          {label}
+        </button>
+      ))
+    }
+  </div>
+
+  <!-- Masonry -->
+  <div class="[column-gap:16px] [column-width:230px]" data-gallery>
+    {
+      gallery.map((ph) => (
+        <div
+          data-category={ph.category}
+          class="mb-4 overflow-hidden rounded-[14px] border border-line bg-surface-soft [break-inside:avoid]"
+          style={`height:${ph.h}px`}
+        >
+          {ph.image ? (
+            <img src={ph.image} alt={ph.category} class="h-full w-full object-cover" loading="lazy" />
+          ) : (
+            <div class="flex h-full w-full items-center justify-center font-inter text-[12px] text-muted">
+              {ph.category}
+            </div>
+          )}
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    var filterBar = document.querySelector('[data-gallery-filters]');
+    var gallery = document.querySelector('[data-gallery]');
+    if (!filterBar || !gallery) return;
+    var buttons = filterBar.querySelectorAll('[data-filter]');
+    var items = gallery.querySelectorAll('[data-category]');
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var value = btn.getAttribute('data-filter');
+        buttons.forEach(function (b) {
+          var active = b === btn;
+          b.classList.toggle('border-gold', active);
+          b.classList.toggle('text-gold-text', active);
+          b.classList.toggle('border-transparent', !active);
+          b.classList.toggle('text-muted', !active);
+        });
+        items.forEach(function (item) {
+          var show = value === 'Tous' || item.getAttribute('data-category') === value;
+          item.style.display = show ? '' : 'none';
+        });
+      });
+    });
+  })();
+</script>

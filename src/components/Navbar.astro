@@ -1,0 +1,141 @@
+---
+import { profile } from '../data/profile';
+
+const navItems = [
+  { label: 'Accueil', href: '#hero' },
+  { label: 'À propos', href: '#about' },
+  { label: 'Parcours', href: '#timeline' },
+  { label: 'Expériences', href: '#experiences' },
+  { label: 'Projets', href: '#projects' },
+  { label: 'Compétences', href: '#skills' },
+  { label: 'Photographie', href: '#photography' },
+  { label: 'Langues', href: '#languages' },
+  { label: 'Contact', href: '#contact' },
+];
+---
+
+<header
+  class="sticky top-0 z-40 flex items-center justify-between gap-3 border-b border-line bg-bg px-5 py-5 sm:px-8 lg:px-14"
+>
+  <a href="#hero" class="font-sora text-lg font-bold text-gold-text">{profile.initials}</a>
+
+  <!-- Desktop nav -->
+  <nav class="hidden items-center gap-[22px] lg:flex">
+    {
+      navItems.map((item) => (
+        <a
+          href={item.href}
+          class="whitespace-nowrap font-sora text-[11px] uppercase tracking-[0.07em] text-muted transition-colors hover:text-gold-text"
+        >
+          {item.label}
+        </a>
+      ))
+    }
+  </nav>
+
+  <div class="hidden items-center gap-3.5 lg:flex">
+    <div
+      class="flex items-center gap-1.5 rounded-full border border-line px-2.5 py-[5px] font-sora text-[10.5px] text-muted"
+    >
+      <span class="text-ink">FR</span><span>/</span><span>EN</span>
+    </div>
+    <button
+      type="button"
+      data-theme-toggle
+      aria-label="Changer de thème"
+      class="flex h-8 w-8 items-center justify-center rounded-full border border-line text-sm text-ink"
+    >
+      <span data-theme-glyph>☾</span>
+    </button>
+  </div>
+
+  <!-- Mobile controls -->
+  <div class="flex items-center gap-3.5 lg:hidden">
+    <button
+      type="button"
+      data-theme-toggle
+      aria-label="Changer de thème"
+      class="flex h-[34px] w-[34px] items-center justify-center rounded-full border border-line text-ink"
+    >
+      <span data-theme-glyph>☾</span>
+    </button>
+    <button
+      type="button"
+      data-menu-toggle
+      aria-label="Ouvrir le menu"
+      aria-expanded="false"
+      class="flex h-[34px] w-[34px] items-center justify-center rounded-full border border-line"
+    >
+      <svg width="16" height="16" viewBox="0 0 18 18" aria-hidden="true">
+        <line x1="2" y1="5" x2="16" y2="5" stroke="currentColor" class="text-ink" stroke-width="1.4" stroke-linecap="round"></line>
+        <line x1="2" y1="9" x2="16" y2="9" stroke="currentColor" class="text-ink" stroke-width="1.4" stroke-linecap="round"></line>
+        <line x1="2" y1="13" x2="16" y2="13" stroke="currentColor" class="text-ink" stroke-width="1.4" stroke-linecap="round"></line>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile menu -->
+<div
+  data-mobile-menu
+  hidden
+  class="flex flex-col border-b border-line bg-bg px-5 pb-5 pt-2 sm:px-8 lg:hidden"
+>
+  {
+    navItems.map((item) => (
+      <a
+        href={item.href}
+        data-menu-link
+        class="border-b border-line py-3 font-sora text-[13px] text-muted transition-colors hover:text-gold-text"
+      >
+        {item.label}
+      </a>
+    ))
+  }
+</div>
+
+<script is:inline>
+  (function () {
+    // --- Bascule de thème (dark / ivoire) avec sauvegarde localStorage ---
+    var STORAGE_KEY = 'portfolio-jones-theme';
+    function currentTheme() {
+      return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    }
+    function syncGlyphs() {
+      var glyph = currentTheme() === 'light' ? '☀' : '☾';
+      document.querySelectorAll('[data-theme-glyph]').forEach(function (el) {
+        el.textContent = glyph;
+      });
+    }
+    syncGlyphs();
+    document.querySelectorAll('[data-theme-toggle]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var next = currentTheme() === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        try {
+          localStorage.setItem(STORAGE_KEY, next);
+        } catch (e) {}
+        syncGlyphs();
+      });
+    });
+
+    // --- Menu mobile (hamburger) ---
+    var menu = document.querySelector('[data-mobile-menu]');
+    var toggle = document.querySelector('[data-menu-toggle]');
+    function setMenu(open) {
+      if (!menu || !toggle) return;
+      menu.hidden = !open;
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    if (toggle) {
+      toggle.addEventListener('click', function () {
+        setMenu(menu.hidden);
+      });
+    }
+    document.querySelectorAll('[data-menu-link]').forEach(function (link) {
+      link.addEventListener('click', function () {
+        setMenu(false);
+      });
+    });
+  })();
+</script>

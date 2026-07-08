@@ -1,0 +1,187 @@
+---
+import { email, phone, socialByKey } from '../data/socials';
+import { profile } from '../data/profile';
+
+const whatsapp = socialByKey['whatsapp'];
+const github = socialByKey['github'];
+const linkedin = socialByKey['linkedin'];
+const facebook = socialByKey['facebook'];
+const instagram = socialByKey['instagram'];
+---
+
+<section id="contact" class="border-t border-line bg-surface px-5 py-[70px] sm:px-8 lg:px-14" data-reveal>
+  <p class="mb-7 font-playfair text-sm italic text-gold-text">— Contact —</p>
+  <div class="flex flex-wrap gap-x-16 gap-y-12">
+    <!-- Colonne formulaire -->
+    <div class="min-w-[260px] flex-[1_1_320px]">
+      <p class="m-0 mb-6 max-w-[420px] font-inter text-[14px] leading-[1.6] text-muted">
+        Une question, une opportunité ou une collaboration ? Écrivez-moi.
+      </p>
+      <form class="flex max-w-[420px] flex-col gap-5" data-contact-form>
+        <input
+          type="text"
+          name="name"
+          required
+          placeholder="Nom"
+          class="border-b border-line bg-transparent pb-2.5 font-inter text-[14px] text-ink placeholder:text-muted focus:border-gold focus:outline-none"
+        />
+        <input
+          type="email"
+          name="email"
+          required
+          placeholder="Email"
+          class="border-b border-line bg-transparent pb-2.5 font-inter text-[14px] text-ink placeholder:text-muted focus:border-gold focus:outline-none"
+        />
+        <textarea
+          name="message"
+          required
+          rows="3"
+          placeholder="Message"
+          class="resize-y border-b border-line bg-transparent pb-2.5 font-inter text-[14px] text-ink placeholder:text-muted focus:border-gold focus:outline-none"
+        ></textarea>
+        <button
+          type="submit"
+          class="mt-1.5 w-fit rounded-full bg-gold px-6 py-3 font-sora text-[13px] font-semibold text-navy transition-transform hover:-translate-y-0.5"
+        >
+          Envoyer
+        </button>
+      </form>
+    </div>
+
+    <!-- Colonne coordonnées -->
+    <div class="flex min-w-[240px] flex-[1_1_280px] flex-col justify-center gap-[18px]">
+      <a href={`mailto:${email}`} class="flex items-center gap-3 text-gold-text">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"
+          ><rect x="1" y="3" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.3"></rect><path
+            d="M2 4l7 6 7-6"
+            stroke="currentColor"
+            stroke-width="1.3"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path></svg
+        >
+        <span class="font-inter text-[14px] text-ink">{email}</span>
+      </a>
+
+      {/* Téléphone — bloc autonome, à retirer facilement (voir socials.ts : phone.show) */}
+      {
+        phone.show && (
+          <a href={phone.href} class="flex items-center gap-3 text-gold-text" data-phone-block>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <rect x="5" y="1" width="8" height="16" rx="2" stroke="currentColor" stroke-width="1.3" />
+              <path d="M8 14h2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+            </svg>
+            <span class="font-inter text-[14px] text-ink">{phone.display}</span>
+          </a>
+        )
+      }
+
+      <div class="flex items-center gap-3 text-gold-text">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"
+          ><circle cx="9" cy="6" r="4" stroke="currentColor" stroke-width="1.3"></circle><path
+            d="M9 10v6"
+            stroke="currentColor"
+            stroke-width="1.3"
+            stroke-linecap="round"></path></svg
+        >
+        <span class="font-inter text-[14px] text-ink">{profile.location}</span>
+      </div>
+
+      <a href={github.href} class="flex items-center gap-3 text-gold-text">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"
+          ><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3" fill="none"></circle><text
+            x="9"
+            y="12.5"
+            font-size="7.5"
+            text-anchor="middle"
+            fill="currentColor"
+            font-family="Sora">gh</text
+          ></svg
+        >
+        <span class="font-inter text-[14px] text-ink">github.com/jonesandria</span>
+      </a>
+
+      <a href={linkedin.href} class="flex items-center gap-3 text-gold-text">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"
+          ><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3" fill="none"></circle><text
+            x="9"
+            y="12.5"
+            font-size="8"
+            text-anchor="middle"
+            fill="currentColor"
+            font-family="Sora">in</text
+          ></svg
+        >
+        <span class="font-inter text-[14px] text-ink"
+          >{linkedin.label}
+          {linkedin.pending && <span class="text-[11px] text-muted">(lien à ajouter)</span>}</span
+        >
+      </a>
+
+      <a
+        href={whatsapp.href}
+        class="mt-2 flex w-fit items-center justify-center gap-2.5 rounded-full border border-line bg-surface-soft px-[22px] py-3 transition-colors hover:border-teal-text"
+      >
+        <svg width="17" height="17" viewBox="0 0 18 18" aria-hidden="true"
+          ><circle cx="9" cy="9" r="8" stroke="#4FB3A3" stroke-width="1.3" fill="none"></circle><text
+            x="9"
+            y="12.5"
+            font-size="7"
+            text-anchor="middle"
+            fill="#4FB3A3"
+            font-family="Sora">wa</text
+          ></svg
+        >
+        <span class="font-sora text-[13px] font-semibold text-ink">{whatsapp.label}</span>
+      </a>
+
+      <div class="mt-1.5 flex items-center gap-2.5">
+        <span class="mr-0.5 font-inter text-[11px] text-muted">Réseaux :</span>
+        <a
+          href={facebook.href}
+          title="Facebook — lien à compléter"
+          aria-label="Facebook"
+          class="flex h-8 w-8 items-center justify-center rounded-full border border-line text-gold-text transition-colors hover:border-gold"
+        >
+          <svg width="14" height="14" viewBox="0 0 18 18" aria-hidden="true"
+            ><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3" fill="none"></circle><text
+              x="9"
+              y="12.5"
+              font-size="8"
+              text-anchor="middle"
+              fill="currentColor"
+              font-family="Sora">f</text
+            ></svg
+          >
+        </a>
+        <a
+          href={instagram.href}
+          title="Instagram — lien à compléter"
+          aria-label="Instagram"
+          class="flex h-8 w-8 items-center justify-center rounded-full border border-line text-gold-text transition-colors hover:border-gold"
+        >
+          <svg width="14" height="14" viewBox="0 0 18 18" aria-hidden="true"
+            ><rect x="1" y="1" width="16" height="16" rx="5" stroke="currentColor" stroke-width="1.3" fill="none"
+            ></rect><circle cx="9" cy="9" r="3.4" stroke="currentColor" stroke-width="1.3" fill="none"></circle></svg
+          >
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline define:vars={{ email }}>
+  (function () {
+    var form = document.querySelector('[data-contact-form]');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var data = new FormData(form);
+      var name = (data.get('name') || '').toString();
+      var from = (data.get('email') || '').toString();
+      var message = (data.get('message') || '').toString();
+      var subject = encodeURIComponent('Contact portfolio — ' + name);
+      var body = encodeURIComponent(message + '\n\n— ' + name + ' (' + from + ')');
+      window.location.href = 'mailto:' + email + '?subject=' + subject + '&body=' + body;
+    });
+  })();
+</script>

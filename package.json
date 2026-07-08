@@ -1,0 +1,18 @@
+{
+  "name": "portfolio-andrianina-jones",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Portfolio editorial premium d'Andrianina Jonès — Infirmier, développeur Flutter et photographe.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^4.16.0",
+    "@astrojs/tailwind": "^5.1.2",
+    "tailwindcss": "^3.4.13"
+  }
+}

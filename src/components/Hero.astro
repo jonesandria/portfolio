@@ -1,0 +1,51 @@
+---
+import { profile } from '../data/profile';
+import { socialByKey } from '../data/socials';
+
+const github = socialByKey['github'];
+---
+
+<section
+  id="hero"
+  class="flex flex-wrap gap-10 px-5 py-14 sm:px-8 sm:py-20 lg:px-14 lg:py-[110px] lg:pb-16"
+>
+  <div class="flex min-w-[280px] flex-1 basis-[420px] flex-col justify-center gap-5" data-reveal>
+    <p class="font-sora text-[11px] uppercase tracking-[0.14em] text-gold-text">
+      {profile.eyebrow}
+    </p>
+    <h1 class="m-0 font-sora text-[clamp(34px,5vw,54px)] font-extrabold leading-[1.08] text-ink">
+      {profile.lastName}<br />{profile.firstName}
+    </h1>
+    <p class="font-playfair text-[19px] italic text-gold-text">{profile.role}</p>
+    <p class="m-0 max-w-[440px] font-inter text-[15px] leading-[1.65] text-muted">
+      {profile.tagline}
+    </p>
+    <div class="mt-1.5 flex flex-wrap gap-3.5">
+      <a
+        href="#projects"
+        class="rounded-full bg-gold px-6 py-3 font-sora text-[13px] font-semibold text-navy transition-transform hover:-translate-y-0.5"
+      >
+        Voir mes projets
+      </a>
+      <a
+        href={github.href}
+        class="rounded-full border border-line px-6 py-3 font-sora text-[13px] font-semibold text-ink transition-colors hover:border-gold"
+      >
+        GitHub
+      </a>
+      <a
+        href="#contact"
+        class="rounded-full border border-line px-6 py-3 font-sora text-[13px] font-semibold text-ink transition-colors hover:border-gold"
+      >
+        Me contacter
+      </a>
+    </div>
+  </div>
+
+  <div
+    class="flex min-h-[380px] min-w-[260px] flex-1 basis-[320px] items-center justify-center overflow-hidden rounded-[20px] border border-line bg-surface-soft"
+    data-reveal
+  >
+    <span class="px-6 text-center font-inter text-[13px] text-muted">{profile.portraitPlaceholder}</span>
+  </div>
+</section>

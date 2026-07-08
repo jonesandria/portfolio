@@ -1,0 +1,44 @@
+---
+import { skillGroups, softSkills, interests } from '../data/skills';
+---
+
+<section id="skills" class="border-t border-line px-5 py-16 sm:px-8 lg:px-14" data-reveal>
+  <p class="mb-8 font-playfair text-sm italic text-gold-text">— Compétences —</p>
+  <div class="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-9">
+    {
+      skillGroups.map((g) => (
+        <div>
+          <h3 class="mb-3.5 font-playfair text-[17px] italic text-gold-text">{g.group}</h3>
+          <div class="flex flex-col gap-2.5">
+            {g.items.map((item) => (
+              <div class="flex items-center gap-2.5 font-inter text-[13.5px] text-ink">
+                <span class="h-1 w-1 flex-shrink-0 rounded-full bg-gold"></span>
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <!-- Soft skills -->
+  <p class="mb-6 mt-14 font-playfair text-sm italic text-gold-text">— Soft skills —</p>
+  <div class="flex flex-wrap gap-2.5">
+    {
+      softSkills.map((s) => (
+        <span class="rounded-full border border-line px-4 py-[7px] font-inter text-[12.5px] text-ink">{s}</span>
+      ))
+    }
+  </div>
+
+  <!-- Centres d'intérêt -->
+  <p class="mb-6 mt-10 font-playfair text-sm italic text-gold-text">— Centres d'intérêt —</p>
+  <div class="flex flex-wrap gap-2.5">
+    {
+      interests.map((it) => (
+        <span class="rounded-full bg-surface-soft px-4 py-[7px] font-inter text-[12.5px] text-muted">{it}</span>
+      ))
+    }
+  </div>
+</section>

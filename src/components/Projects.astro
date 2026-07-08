@@ -1,0 +1,35 @@
+---
+import { projects } from '../data/projects';
+---
+
+<section id="projects" class="border-t border-line px-5 py-16 sm:px-8 lg:px-14" data-reveal>
+  <p class="mb-8 font-playfair text-sm italic text-gold-text">— Projets —</p>
+  <div class="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-8">
+    {
+      projects.map((p) => (
+        <article class="flex flex-col gap-3">
+          <div class="h-[170px] overflow-hidden rounded-[14px] border border-line bg-surface-soft">
+            {p.image ? (
+              <img src={p.image} alt={p.name} class="h-full w-full object-cover" loading="lazy" />
+            ) : (
+              <div class="flex h-full w-full items-center justify-center px-4 text-center font-inter text-[12px] text-muted">
+                {p.placeholder}
+              </div>
+            )}
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="font-sora text-[10.5px] uppercase tracking-[0.06em] text-teal-text">{p.category}</span>
+            <span class="font-inter text-[10.5px] text-muted">{p.status}</span>
+          </div>
+          <h3 class="font-sora text-[18px] font-semibold text-ink">{p.name}</h3>
+          <p class="font-inter text-[13px] leading-[1.5] text-muted">{p.desc}</p>
+          <div class="flex flex-wrap gap-2">
+            {p.tags.map((tag) => (
+              <span class="rounded-full border border-line px-3 py-1 font-inter text-[11px] text-muted">{tag}</span>
+            ))}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>

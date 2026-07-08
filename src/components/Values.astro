@@ -1,0 +1,37 @@
+---
+import { values } from '../data/values';
+import { profile } from '../data/profile';
+
+const pad = (i: number) => String(i + 1).padStart(2, '0');
+---
+
+<section id="values" class="border-t border-line px-5 py-16 sm:px-8 lg:px-14" data-reveal>
+  <p class="mb-8 font-playfair text-sm italic text-gold-text">— Valeurs —</p>
+  <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))]">
+    {
+      values.map((v, i) => (
+        <div class="border-l border-line pl-6 pr-7">
+          <div class="mb-2.5 font-playfair text-[28px] text-gold-text">{pad(i)}</div>
+          <div class="mb-2 font-sora text-[15.5px] font-semibold text-ink">{v.title}</div>
+          <div class="max-w-[220px] font-inter text-[12.5px] leading-[1.5] text-muted">{v.desc}</div>
+        </div>
+      ))
+    }
+  </div>
+
+  <!-- Philosophie & vision -->
+  <div class="mt-16 max-w-[920px]">
+    <p class="mb-6 font-playfair text-sm italic text-gold-text">— Philosophie —</p>
+    <p class="m-0 mb-10 font-playfair text-[20px] italic leading-[1.6] text-ink">{profile.philosophy}</p>
+    <div class="flex flex-wrap gap-7">
+      {
+        profile.vision.map((v) => (
+          <div class="min-w-[180px] flex-[1_1_200px]">
+            <div class="mb-2 font-sora text-[11px] uppercase tracking-[0.08em] text-teal-text">Dans {v.term}</div>
+            <div class="font-inter text-[13px] leading-[1.55] text-muted">{v.desc}</div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

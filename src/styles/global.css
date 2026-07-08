@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   THEME TOKENS
+   Dark mode is the default (applied on <html>).
+   Ivory light mode overrides the tokens under [data-theme="light"].
+   The theme class is set before paint by an inline script in
+   BaseLayout to avoid any flash of the wrong theme (FOUC).
+   ============================================================ */
+:root,
+:root[data-theme='dark'] {
+  --bg: #0b1220;
+  --surface: #111827;
+  --surface-soft: #182235;
+  --text: #f8f5ed;
+  --text-secondary: #aab3c5;
+  --border: #263244;
+  --gold-text: #d6b46a;
+  --teal-text: #4fb3a3;
+  --blue-text: #60a5fa;
+}
+
+:root[data-theme='light'] {
+  --bg: #f8f5ed; /* ivory */
+  --surface: #ffffff;
+  --surface-soft: #f1ecda;
+  --text: #0b1220;
+  --text-secondary: #5b6472;
+  --border: #e3dcc9;
+  --gold-text: #8f6a2e;
+  --teal-text: #2c8c7c;
+  --blue-text: #3569c4;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+::selection {
+  background: #d6b46a;
+  color: #0b1220;
+}
+
+/* Light on-scroll reveal. Elements tagged with [data-reveal] start hidden
+   and fade up when they enter the viewport (see BaseLayout script).
+   Falls back to visible if JS or IntersectionObserver is unavailable. */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

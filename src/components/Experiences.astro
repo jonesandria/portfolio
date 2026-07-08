@@ -1,0 +1,25 @@
+---
+import { experiences } from '../data/experiences';
+---
+
+<section id="experiences" class="border-t border-line px-5 py-16 sm:px-8 lg:px-14" data-reveal>
+  <p class="mb-8 font-playfair text-sm italic text-gold-text">— Expériences —</p>
+  <div class="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-[18px]">
+    {
+      experiences.map((xp) => (
+        <article class="flex flex-col gap-2.5 rounded-2xl border border-line bg-surface p-6 transition-all duration-200 hover:-translate-y-1 hover:border-gold">
+          <h3 class="font-sora text-[15.5px] font-semibold text-ink">{xp.role}</h3>
+          <p class="font-inter text-[11.5px] text-muted">
+            {xp.org} · {xp.period}
+          </p>
+          <p class="font-inter text-[12.5px] leading-[1.5] text-muted">{xp.desc}</p>
+          <div class="mt-1 flex flex-wrap gap-1.5">
+            {xp.tags.map((tag) => (
+              <span class="rounded-md bg-surface-soft px-2.5 py-1 font-sora text-[10px] text-gold-text">{tag}</span>
+            ))}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
