@@ -1,34 +1,40 @@
 ---
 import { values } from '../data/values';
 import { profile } from '../data/profile';
+import { ui, enData } from '../data/i18n';
 
 const pad = (i: number) => String(i + 1).padStart(2, '0');
+const vals = values.map((v, i) => ({ ...v, en: enData.values[i] }));
+const vision = profile.vision.map((v, i) => ({ ...v, en: enData.profile.vision[i] }));
 ---
 
 <section id="values" class="border-t border-line px-5 py-16 sm:px-8 lg:px-14" data-reveal>
-  <p class="mb-8 font-playfair text-sm italic text-gold-text">— Valeurs —</p>
-  <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))]">
+  <p class="mb-8 font-playfair text-sm italic text-gold-text" data-en={ui.eyebrow.values}>— Valeurs —</p>
+  <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
     {
-      values.map((v, i) => (
-        <div class="border-l border-line pl-6 pr-7">
+      vals.map((v, i) => (
+        <div class="border-l border-line pl-6 pr-2">
           <div class="mb-2.5 font-playfair text-[28px] text-gold-text">{pad(i)}</div>
-          <div class="mb-2 font-sora text-[15.5px] font-semibold text-ink">{v.title}</div>
-          <div class="max-w-[220px] font-inter text-[12.5px] leading-[1.5] text-muted">{v.desc}</div>
+          <div class="mb-2 font-sora text-[15.5px] font-semibold text-ink" data-en={v.en.title}>{v.title}</div>
+          <div class="max-w-[220px] font-inter text-[12.5px] leading-[1.5] text-muted" data-en={v.en.desc}>{v.desc}</div>
         </div>
       ))
     }
   </div>
 
-  <!-- Philosophie & vision -->
   <div class="mt-16 max-w-[920px]">
-    <p class="mb-6 font-playfair text-sm italic text-gold-text">— Philosophie —</p>
-    <p class="m-0 mb-10 font-playfair text-[20px] italic leading-[1.6] text-ink">{profile.philosophy}</p>
+    <p class="mb-6 font-playfair text-sm italic text-gold-text" data-en={ui.eyebrow.philosophy}>— Philosophie —</p>
+    <p class="m-0 mb-10 font-playfair text-[20px] italic leading-[1.6] text-ink" data-en={enData.profile.philosophy}>
+      {profile.philosophy}
+    </p>
     <div class="flex flex-wrap gap-7">
       {
-        profile.vision.map((v) => (
+        vision.map((v) => (
           <div class="min-w-[180px] flex-[1_1_200px]">
-            <div class="mb-2 font-sora text-[11px] uppercase tracking-[0.08em] text-teal-text">Dans {v.term}</div>
-            <div class="font-inter text-[13px] leading-[1.55] text-muted">{v.desc}</div>
+            <div class="mb-2 font-sora text-[11px] uppercase tracking-[0.08em] text-teal-text">
+              <span data-en="In">Dans</span> <span data-en={v.en.term}>{v.term}</span>
+            </div>
+            <div class="font-inter text-[13px] leading-[1.55] text-muted" data-en={v.en.desc}>{v.desc}</div>
           </div>
         ))
       }

@@ -1,20 +1,51 @@
 ---
 import { timeline } from '../data/timeline';
+import { ui, enData } from '../data/i18n';
+
+const dotColor: Record<string, string> = {
+  sante: '79, 179, 163',
+  international: '96, 165, 250',
+  tech: '214, 180, 106',
+  formation: '214, 180, 106',
+  projet: '148, 163, 184',
+};
+
+const steps = timeline.map((s, i) => ({ ...s, en: enData.timeline[i] }));
 ---
 
 <section id="timeline" class="border-t border-line px-5 py-16 sm:px-8 lg:px-14" data-reveal>
-  <p class="mb-10 font-playfair text-sm italic text-gold-text">— Parcours —</p>
-  <div class="relative flex max-w-[720px] flex-col gap-[30px] pl-[26px]">
-    <span class="absolute bottom-1 left-1 top-1 w-px bg-line"></span>
+  <p class="mb-10 font-playfair text-sm italic text-gold-text" data-en={ui.eyebrow.journey}>— Parcours —</p>
+
+  <ol class="relative ml-1 flex max-w-[760px] flex-col gap-8 border-l border-line pl-7 sm:gap-9 sm:pl-9">
     {
-      timeline.map((step) => (
-        <div class="relative">
-          <span class="absolute -left-[26px] top-[5px] h-[9px] w-[9px] rounded-full bg-gold"></span>
-          <div class="mb-1.5 font-playfair text-[19px] text-gold-text">{step.year}</div>
-          <div class="mb-1.5 font-sora text-[15px] font-semibold text-ink">{step.title}</div>
-          <div class="font-inter text-[13px] leading-[1.55] text-muted">{step.desc}</div>
-        </div>
+      steps.map((step) => (
+        <li class="tl-item relative" style={`--dot:${dotColor[step.tag ?? 'projet'] ?? '214, 180, 106'};`}>
+          <span class="tl-dot absolute top-1.5 flex h-3 w-3 items-center justify-center rounded-full" aria-hidden="true" />
+          <div class="font-sora text-[12px] font-medium uppercase tracking-[0.06em] text-gold-text" data-en={step.en.year}>{step.year}</div>
+          <h3 class="mt-1 font-sora text-[15px] font-semibold leading-snug text-ink" data-en={step.en.title}>{step.title}</h3>
+          <p class="mt-1 font-inter text-[12.5px] leading-[1.55] text-muted" data-en={step.en.desc}>{step.desc}</p>
+        </li>
       ))
     }
-  </div>
+  </ol>
 </section>
+
+<style>
+  .tl-dot {
+    left: calc(-1.75rem - 6px);
+    background: rgb(var(--dot));
+    box-shadow: 0 0 0 3px rgba(var(--dot), 0.18);
+    transition: box-shadow 0.35s ease, transform 0.35s ease;
+  }
+  @media (min-width: 640px) {
+    .tl-dot { left: calc(-2.25rem - 6px); }
+  }
+  .tl-item:hover .tl-dot {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 4px rgba(var(--dot), 0.28);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tl-dot { transition: none; }
+    .tl-item:hover .tl-dot { transform: none; }
+  }
+</style>

@@ -30,7 +30,7 @@ const {
       rel="stylesheet"
     />
 
-    <!-- Applique le thème sauvegardé AVANT le rendu pour éviter tout flash. -->
+    <!-- Applique le thème + la langue sauvegardés AVANT le rendu (anti-flash). -->
     <script is:inline>
       (function () {
         try {
@@ -38,12 +38,55 @@ const {
           if (saved === 'light' || saved === 'dark') {
             document.documentElement.setAttribute('data-theme', saved);
           }
+          var lang = localStorage.getItem('portfolio-jones-lang');
+          if (lang === 'en' || lang === 'fr') {
+            document.documentElement.setAttribute('lang', lang);
+          }
         } catch (e) {}
       })();
     </script>
   </head>
   <body>
     <slot />
+
+    <!-- Bascule FR/EN : swap du texte via data-en, mémorisé en localStorage. -->
+    <script is:inline>
+      (function () {
+        var KEY = 'portfolio-jones-lang';
+        function getLang() {
+          try {
+            var l = localStorage.getItem(KEY);
+            return l === 'en' ? 'en' : 'fr';
+          } catch (e) {
+            return 'fr';
+          }
+        }
+        function apply(lang) {
+          document.documentElement.setAttribute('lang', lang);
+          document.querySelectorAll('[data-en]').forEach(function (el) {
+            if (el.getAttribute('data-fr') === null) el.setAttribute('data-fr', el.textContent);
+            el.textContent = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-fr');
+          });
+          document.querySelectorAll('[data-en-ph]').forEach(function (el) {
+            if (el.getAttribute('data-fr-ph') === null) el.setAttribute('data-fr-ph', el.getAttribute('placeholder') || '');
+            el.setAttribute('placeholder', lang === 'en' ? el.getAttribute('data-en-ph') : el.getAttribute('data-fr-ph'));
+          });
+          document.querySelectorAll('[data-lang-btn]').forEach(function (b) {
+            var active = b.getAttribute('data-lang-btn') === lang;
+            b.classList.toggle('text-gold-text', active);
+            b.classList.toggle('text-muted', !active);
+          });
+        }
+        window.setLang = function (l) {
+          l = l === 'en' ? 'en' : 'fr';
+          try {
+            localStorage.setItem(KEY, l);
+          } catch (e) {}
+          apply(l);
+        };
+        apply(getLang());
+      })();
+    </script>
 
     <!-- Révélation légère au scroll (fade-up). -->
     <script is:inline>

@@ -1,6 +1,7 @@
 ---
 import { email, phone, socialByKey } from '../data/socials';
 import { profile } from '../data/profile';
+import { ui } from '../data/i18n';
 
 const whatsapp = socialByKey['whatsapp'];
 const github = socialByKey['github'];
@@ -10,11 +11,12 @@ const instagram = socialByKey['instagram'];
 ---
 
 <section id="contact" class="border-t border-line bg-surface px-5 py-[70px] sm:px-8 lg:px-14" data-reveal>
-  <p class="mb-7 font-playfair text-sm italic text-gold-text">— Contact —</p>
+  <p class="mb-7 font-playfair text-sm italic text-gold-text" data-en={ui.eyebrow.contact}>— Contact —</p>
+
   <div class="flex flex-wrap gap-x-16 gap-y-12">
     <!-- Colonne formulaire -->
     <div class="min-w-[260px] flex-[1_1_320px]">
-      <p class="m-0 mb-6 max-w-[420px] font-inter text-[14px] leading-[1.6] text-muted">
+      <p class="m-0 mb-6 max-w-[420px] font-inter text-[14px] leading-[1.6] text-muted" data-en={ui.contact.intro}>
         Une question, une opportunité ou une collaboration ? Écrivez-moi.
       </p>
       <form class="flex max-w-[420px] flex-col gap-5" data-contact-form>
@@ -23,6 +25,7 @@ const instagram = socialByKey['instagram'];
           name="name"
           required
           placeholder="Nom"
+          data-en-ph={ui.contact.name}
           class="border-b border-line bg-transparent pb-2.5 font-inter text-[14px] text-ink placeholder:text-muted focus:border-gold focus:outline-none"
         />
         <input
@@ -30,6 +33,7 @@ const instagram = socialByKey['instagram'];
           name="email"
           required
           placeholder="Email"
+          data-en-ph={ui.contact.email}
           class="border-b border-line bg-transparent pb-2.5 font-inter text-[14px] text-ink placeholder:text-muted focus:border-gold focus:outline-none"
         />
         <textarea
@@ -37,137 +41,185 @@ const instagram = socialByKey['instagram'];
           required
           rows="3"
           placeholder="Message"
+          data-en-ph={ui.contact.message}
           class="resize-y border-b border-line bg-transparent pb-2.5 font-inter text-[14px] text-ink placeholder:text-muted focus:border-gold focus:outline-none"
         ></textarea>
         <button
           type="submit"
-          class="mt-1.5 w-fit rounded-full bg-gold px-6 py-3 font-sora text-[13px] font-semibold text-navy transition-transform hover:-translate-y-0.5"
+          data-en={ui.contact.send}
+          class="mt-1.5 min-h-[44px] w-fit rounded-full bg-gold px-6 py-3 font-sora text-[13px] font-semibold text-navy transition-transform hover:-translate-y-0.5"
         >
           Envoyer
         </button>
       </form>
     </div>
 
-    <!-- Colonne coordonnées -->
-    <div class="flex min-w-[240px] flex-[1_1_280px] flex-col justify-center gap-[18px]">
-      <a href={`mailto:${email}`} class="flex items-center gap-3 text-gold-text">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"
-          ><rect x="1" y="3" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.3"></rect><path
-            d="M2 4l7 6 7-6"
-            stroke="currentColor"
-            stroke-width="1.3"
-            stroke-linecap="round"
-            stroke-linejoin="round"></path></svg
-        >
-        <span class="font-inter text-[14px] text-ink">{email}</span>
-      </a>
+    <!-- Colonne coordonnées : cartes cliquables -->
+    <div class="min-w-[260px] flex-[1_1_360px]">
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <a href={`mailto:${email}`} class="contact-card">
+          <span class="contact-ic">
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true"
+              ><rect x="1" y="3" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.3"></rect><path
+                d="M2 4l7 6 7-6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path></svg
+            >
+          </span>
+          <span class="contact-text">
+            <span class="contact-label">Email</span>
+            <span class="contact-sub">{email}</span>
+          </span>
+        </a>
 
-      {/* Téléphone — bloc autonome, à retirer facilement (voir socials.ts : phone.show) */}
-      {
-        phone.show && (
-          <a href={phone.href} class="flex items-center gap-3 text-gold-text" data-phone-block>
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-              <rect x="5" y="1" width="8" height="16" rx="2" stroke="currentColor" stroke-width="1.3" />
-              <path d="M8 14h2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-            </svg>
-            <span class="font-inter text-[14px] text-ink">{phone.display}</span>
-          </a>
-        )
-      }
+        <a href={whatsapp.href} target="_blank" rel="noopener noreferrer" class="contact-card">
+          <span class="contact-ic">
+            <svg width="16" height="16" viewBox="0 0 18 18" aria-hidden="true"
+              ><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3" fill="none"></circle><text
+                x="9" y="12.5" font-size="7" text-anchor="middle" fill="currentColor" font-family="Sora">wa</text></svg
+            >
+          </span>
+          <span class="contact-text">
+            <span class="contact-label">WhatsApp</span>
+            <span class="contact-sub" data-en={ui.contact.subMessage}>Message direct</span>
+          </span>
+        </a>
 
-      <div class="flex items-center gap-3 text-gold-text">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"
-          ><circle cx="9" cy="6" r="4" stroke="currentColor" stroke-width="1.3"></circle><path
-            d="M9 10v6"
-            stroke="currentColor"
-            stroke-width="1.3"
-            stroke-linecap="round"></path></svg
-        >
-        <span class="font-inter text-[14px] text-ink">{profile.location}</span>
+        <a href={github.href} target="_blank" rel="noopener noreferrer" class="contact-card">
+          <span class="contact-ic">
+            <svg width="16" height="16" viewBox="0 0 18 18" aria-hidden="true"
+              ><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3" fill="none"></circle><text
+                x="9" y="12.5" font-size="7.5" text-anchor="middle" fill="currentColor" font-family="Sora">gh</text></svg
+            >
+          </span>
+          <span class="contact-text">
+            <span class="contact-label">GitHub</span>
+            <span class="contact-sub">github.com/jonesandria</span>
+          </span>
+        </a>
+
+        <a href={linkedin.href} target="_blank" rel="noopener noreferrer" class="contact-card">
+          <span class="contact-ic">
+            <svg width="16" height="16" viewBox="0 0 18 18" aria-hidden="true"
+              ><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3" fill="none"></circle><text
+                x="9" y="12.5" font-size="8" text-anchor="middle" fill="currentColor" font-family="Sora">in</text></svg
+            >
+          </span>
+          <span class="contact-text">
+            <span class="contact-label">LinkedIn</span>
+            <span class="contact-sub">Andrianina Jonès</span>
+          </span>
+        </a>
+
+        <a href={facebook.href} target="_blank" rel="noopener noreferrer" class="contact-card">
+          <span class="contact-ic">
+            <svg width="16" height="16" viewBox="0 0 18 18" aria-hidden="true"
+              ><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3" fill="none"></circle><text
+                x="9" y="12.5" font-size="8" text-anchor="middle" fill="currentColor" font-family="Sora">f</text></svg
+            >
+          </span>
+          <span class="contact-text">
+            <span class="contact-label">Facebook</span>
+            <span class="contact-sub" data-en={ui.contact.subProfile}>Profil</span>
+          </span>
+        </a>
+
+        <a href={instagram.href} target="_blank" rel="noopener noreferrer" class="contact-card">
+          <span class="contact-ic">
+            <svg width="16" height="16" viewBox="0 0 18 18" aria-hidden="true"
+              ><rect x="1" y="1" width="16" height="16" rx="5" stroke="currentColor" stroke-width="1.3" fill="none"
+              ></rect><circle cx="9" cy="9" r="3.4" stroke="currentColor" stroke-width="1.3" fill="none"></circle></svg
+            >
+          </span>
+          <span class="contact-text">
+            <span class="contact-label">Instagram</span>
+            <span class="contact-sub">@andrianinajones</span>
+          </span>
+        </a>
+
+        {/* Téléphone — bloc autonome, facile à retirer (socials.ts : phone.show = false) */}
+        {
+          phone.show && (
+            <a href={phone.href} class="contact-card" data-phone-block>
+              <span class="contact-ic">
+                <svg width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <rect x="5" y="1" width="8" height="16" rx="2" stroke="currentColor" stroke-width="1.3" />
+                  <path d="M8 14h2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                </svg>
+              </span>
+              <span class="contact-text">
+                <span class="contact-label" data-en={ui.contact.phone}>Téléphone</span>
+                <span class="contact-sub">{phone.display}</span>
+              </span>
+            </a>
+          )
+        }
       </div>
 
-      <a href={github.href} class="flex items-center gap-3 text-gold-text">
-        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"
-          ><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3" fill="none"></circle><text
-            x="9"
-            y="12.5"
-            font-size="7.5"
-            text-anchor="middle"
-            fill="currentColor"
-            font-family="Sora">gh</text
-          ></svg
+      <p class="mt-5 flex items-center gap-2 font-inter text-[12.5px] text-muted">
+        <svg width="15" height="15" viewBox="0 0 18 18" fill="none" aria-hidden="true"
+          ><path d="M9 16s6-4.5 6-9A6 6 0 0 0 3 7c0 4.5 6 9 6 9z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><circle
+            cx="9" cy="7" r="2.2" stroke="currentColor" stroke-width="1.3"></circle></svg
         >
-        <span class="font-inter text-[14px] text-ink">github.com/jonesandria</span>
-      </a>
-
-      <a href={linkedin.href} class="flex items-center gap-3 text-gold-text">
-        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"
-          ><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3" fill="none"></circle><text
-            x="9"
-            y="12.5"
-            font-size="8"
-            text-anchor="middle"
-            fill="currentColor"
-            font-family="Sora">in</text
-          ></svg
-        >
-        <span class="font-inter text-[14px] text-ink"
-          >{linkedin.label}
-          {linkedin.pending && <span class="text-[11px] text-muted">(lien à ajouter)</span>}</span
-        >
-      </a>
-
-      <a
-        href={whatsapp.href}
-        class="mt-2 flex w-fit items-center justify-center gap-2.5 rounded-full border border-line bg-surface-soft px-[22px] py-3 transition-colors hover:border-teal-text"
-      >
-        <svg width="17" height="17" viewBox="0 0 18 18" aria-hidden="true"
-          ><circle cx="9" cy="9" r="8" stroke="#4FB3A3" stroke-width="1.3" fill="none"></circle><text
-            x="9"
-            y="12.5"
-            font-size="7"
-            text-anchor="middle"
-            fill="#4FB3A3"
-            font-family="Sora">wa</text
-          ></svg
-        >
-        <span class="font-sora text-[13px] font-semibold text-ink">{whatsapp.label}</span>
-      </a>
-
-      <div class="mt-1.5 flex items-center gap-2.5">
-        <span class="mr-0.5 font-inter text-[11px] text-muted">Réseaux :</span>
-        <a
-          href={facebook.href}
-          title="Facebook — lien à compléter"
-          aria-label="Facebook"
-          class="flex h-8 w-8 items-center justify-center rounded-full border border-line text-gold-text transition-colors hover:border-gold"
-        >
-          <svg width="14" height="14" viewBox="0 0 18 18" aria-hidden="true"
-            ><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3" fill="none"></circle><text
-              x="9"
-              y="12.5"
-              font-size="8"
-              text-anchor="middle"
-              fill="currentColor"
-              font-family="Sora">f</text
-            ></svg
-          >
-        </a>
-        <a
-          href={instagram.href}
-          title="Instagram — lien à compléter"
-          aria-label="Instagram"
-          class="flex h-8 w-8 items-center justify-center rounded-full border border-line text-gold-text transition-colors hover:border-gold"
-        >
-          <svg width="14" height="14" viewBox="0 0 18 18" aria-hidden="true"
-            ><rect x="1" y="1" width="16" height="16" rx="5" stroke="currentColor" stroke-width="1.3" fill="none"
-            ></rect><circle cx="9" cy="9" r="3.4" stroke="currentColor" stroke-width="1.3" fill="none"></circle></svg
-          >
-        </a>
-      </div>
+        {profile.location}
+      </p>
     </div>
   </div>
 </section>
+
+<style>
+  .contact-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 56px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--surface-soft) 60%, transparent);
+    padding: 0.75rem 1rem;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  .contact-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(214, 180, 106, 0.5);
+  }
+  .contact-ic {
+    display: flex;
+    height: 2.25rem;
+    width: 2.25rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    color: var(--gold-text);
+  }
+  .contact-text {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+  }
+  .contact-label {
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .contact-sub {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .contact-card {
+      transition: none;
+    }
+    .contact-card:hover {
+      transform: none;
+    }
+  }
+</style>
 
 <script is:inline define:vars={{ email }}>
   (function () {

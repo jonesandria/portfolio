@@ -1,15 +1,18 @@
 ---
 import { languages } from '../data/languages';
+import { ui, enData } from '../data/i18n';
+
+const langs = languages.map((l, i) => ({ ...l, en: enData.languages[i] }));
 ---
 
 <section id="languages" class="border-t border-line px-5 py-16 sm:px-8 lg:px-14" data-reveal>
-  <p class="mb-7 font-playfair text-sm italic text-gold-text">— Langues —</p>
+  <p class="mb-7 font-playfair text-sm italic text-gold-text" data-en={ui.eyebrow.languages}>— Langues —</p>
   <div class="flex flex-wrap gap-3.5">
     {
-      languages.map((lang) => (
+      langs.map((lang) => (
         <div class="flex min-w-[150px] flex-col gap-1 rounded-xl border border-line px-[18px] py-3.5">
-          <div class="font-sora text-[14.5px] font-semibold text-ink">{lang.name}</div>
-          <div class="font-playfair text-[12px] italic text-gold-text">{lang.level}</div>
+          <div class="font-sora text-[14.5px] font-semibold text-ink" data-en={lang.en.name}>{lang.name}</div>
+          <div class="font-playfair text-[12px] italic text-gold-text" data-en={lang.en.level}>{lang.level}</div>
         </div>
       ))
     }

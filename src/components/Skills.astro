@@ -1,44 +1,54 @@
 ---
-import { skillGroups, softSkills, interests } from '../data/skills';
+import { skillGroups, interests } from '../data/skills';
+import { ui, enData } from '../data/i18n';
+
+const groups = skillGroups.map((g, i) => ({ ...g, en: enData.skills.groups[i] }));
+const interestsZip = interests.map((it, i) => ({ fr: it, en: enData.skills.interests[i] }));
 ---
 
 <section id="skills" class="border-t border-line px-5 py-16 sm:px-8 lg:px-14" data-reveal>
-  <p class="mb-8 font-playfair text-sm italic text-gold-text">— Compétences —</p>
-  <div class="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-9">
+  <p class="mb-8 font-playfair text-sm italic text-gold-text" data-en={ui.eyebrow.skills}>— Compétences —</p>
+
+  <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
     {
-      skillGroups.map((g) => (
-        <div>
-          <h3 class="mb-3.5 font-playfair text-[17px] italic text-gold-text">{g.group}</h3>
-          <div class="flex flex-col gap-2.5">
-            {g.items.map((item) => (
-              <div class="flex items-center gap-2.5 font-inter text-[13.5px] text-ink">
-                <span class="h-1 w-1 flex-shrink-0 rounded-full bg-gold"></span>
+      groups.map((g) => (
+        <article class="skill-card flex h-full flex-col gap-4 rounded-[18px] border border-line bg-surface/50 p-6 backdrop-blur-sm">
+          <h3 class="flex items-center gap-2 font-sora text-[14px] font-semibold text-ink">
+            <span class="h-4 w-1 rounded-full bg-gold" aria-hidden="true" />
+            <span data-en={g.en.group}>{g.group}</span>
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            {g.items.map((item, j) => (
+              <span class="rounded-full border border-line px-3 py-1.5 font-inter text-[11.5px] text-muted transition-colors hover:border-gold/50 hover:text-ink" data-en={g.en.items[j]}>
                 {item}
-              </div>
+              </span>
             ))}
           </div>
-        </div>
+        </article>
       ))
     }
   </div>
 
-  <!-- Soft skills -->
-  <p class="mb-6 mt-14 font-playfair text-sm italic text-gold-text">— Soft skills —</p>
-  <div class="flex flex-wrap gap-2.5">
+  <p class="mb-5 mt-12 font-playfair text-sm italic text-gold-text" data-en={ui.eyebrow.interests}>— Centres d'intérêt —</p>
+  <div class="flex flex-wrap gap-2">
     {
-      softSkills.map((s) => (
-        <span class="rounded-full border border-line px-4 py-[7px] font-inter text-[12.5px] text-ink">{s}</span>
-      ))
-    }
-  </div>
-
-  <!-- Centres d'intérêt -->
-  <p class="mb-6 mt-10 font-playfair text-sm italic text-gold-text">— Centres d'intérêt —</p>
-  <div class="flex flex-wrap gap-2.5">
-    {
-      interests.map((it) => (
-        <span class="rounded-full bg-surface-soft px-4 py-[7px] font-inter text-[12.5px] text-muted">{it}</span>
+      interestsZip.map((it) => (
+        <span class="rounded-full bg-surface-soft px-4 py-1.5 font-inter text-[12px] text-muted" data-en={it.en}>{it.fr}</span>
       ))
     }
   </div>
 </section>
+
+<style>
+  .skill-card { transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease; }
+  .skill-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(214, 180, 106, 0.4);
+    box-shadow: 0 16px 40px -24px rgba(0, 0, 0, 0.6);
+  }
+  :global([data-theme='light']) .skill-card:hover { box-shadow: 0 14px 32px -24px rgba(0, 0, 0, 0.35); }
+  @media (prefers-reduced-motion: reduce) {
+    .skill-card { transition: none; }
+    .skill-card:hover { transform: none; }
+  }
+</style>

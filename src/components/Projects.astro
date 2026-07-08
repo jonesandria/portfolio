@@ -1,35 +1,58 @@
 ---
 import { projects } from '../data/projects';
+import { ui, enData } from '../data/i18n';
+
+const accents = ['79, 179, 163', '96, 165, 250', '214, 180, 106', '214, 180, 106'];
+const items = projects.map((p, i) => ({ ...p, en: enData.projects[i], accent: accents[i % accents.length] }));
 ---
 
 <section id="projects" class="border-t border-line px-5 py-16 sm:px-8 lg:px-14" data-reveal>
-  <p class="mb-8 font-playfair text-sm italic text-gold-text">— Projets —</p>
-  <div class="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-8">
+  <p class="mb-8 font-playfair text-sm italic text-gold-text" data-en={ui.eyebrow.projects}>— Projets —</p>
+
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
     {
-      projects.map((p) => (
-        <article class="flex flex-col gap-3">
-          <div class="h-[170px] overflow-hidden rounded-[14px] border border-line bg-surface-soft">
-            {p.image ? (
-              <img src={p.image} alt={p.name} class="h-full w-full object-cover" loading="lazy" />
-            ) : (
-              <div class="flex h-full w-full items-center justify-center px-4 text-center font-inter text-[12px] text-muted">
-                {p.placeholder}
-              </div>
-            )}
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="font-sora text-[10.5px] uppercase tracking-[0.06em] text-teal-text">{p.category}</span>
-            <span class="font-inter text-[10.5px] text-muted">{p.status}</span>
-          </div>
-          <h3 class="font-sora text-[18px] font-semibold text-ink">{p.name}</h3>
-          <p class="font-inter text-[13px] leading-[1.5] text-muted">{p.desc}</p>
-          <div class="flex flex-wrap gap-2">
-            {p.tags.map((tag) => (
-              <span class="rounded-full border border-line px-3 py-1 font-inter text-[11px] text-muted">{tag}</span>
-            ))}
+      items.map((p) => (
+        <article class="brand-card group flex h-full items-center gap-6 rounded-[26px] border border-line bg-surface/50 p-6 backdrop-blur-sm" style={`--a:${p.accent};`}>
+          {p.image ? (
+            <img src={p.image} alt={p.name} loading="lazy" class="brand-logo h-[128px] w-[128px] shrink-0 self-center rounded-[24px] object-contain" />
+          ) : (
+            <span class="flex h-[128px] w-[128px] shrink-0 items-center justify-center self-center text-center font-inter text-[11px] text-muted">{p.placeholder}</span>
+          )}
+          <div class="flex min-w-0 flex-1 flex-col gap-2">
+            <div class="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+              <span class="font-sora text-[10.5px] uppercase tracking-[0.06em] text-teal-text" data-en={p.en.category}>{p.category}</span>
+              <span class="text-[10px] text-line">•</span>
+              <span class="font-inter text-[10.5px] text-muted" data-en={p.en.status}>{p.status}</span>
+            </div>
+            <h3 class="font-sora text-[17px] font-semibold text-ink">{p.name}</h3>
+            <p class="font-inter text-[12.5px] leading-[1.5] text-muted" data-en={p.en.desc}>{p.desc}</p>
+            <div class="mt-1 flex flex-wrap gap-1.5">
+              {p.tags.map((tag, j) => (
+                <span class="rounded-full border border-line px-2.5 py-1 font-inter text-[10.5px] text-muted" data-en={p.en.tags[j]}>{tag}</span>
+              ))}
+            </div>
           </div>
         </article>
       ))
     }
   </div>
 </section>
+
+<style>
+  .brand-card { transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease; }
+  .brand-logo {
+    filter: drop-shadow(0 6px 16px rgba(var(--a), 0.35));
+    transition: filter 0.35s ease;
+  }
+  .brand-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(var(--a), 0.4);
+    box-shadow: 0 16px 40px -22px rgba(var(--a), 0.5);
+  }
+  .brand-card:hover .brand-logo { filter: drop-shadow(0 8px 22px rgba(var(--a), 0.55)); }
+  :global([data-theme='light']) .brand-logo { filter: drop-shadow(0 5px 14px rgba(var(--a), 0.22)); }
+  @media (prefers-reduced-motion: reduce) {
+    .brand-card { transition: none; }
+    .brand-card:hover { transform: none; }
+  }
+</style>

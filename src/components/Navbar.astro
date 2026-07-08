@@ -1,5 +1,6 @@
 ---
 import { profile } from '../data/profile';
+import { ui } from '../data/i18n';
 
 const navItems = [
   { label: 'Accueil', href: '#hero' },
@@ -11,11 +12,11 @@ const navItems = [
   { label: 'Photographie', href: '#photography' },
   { label: 'Langues', href: '#languages' },
   { label: 'Contact', href: '#contact' },
-];
+].map((item, i) => ({ ...item, en: ui.nav[i] }));
 ---
 
 <header
-  class="sticky top-0 z-40 flex items-center justify-between gap-3 border-b border-line bg-bg px-5 py-5 sm:px-8 lg:px-14"
+  class="sticky top-0 z-40 flex items-center justify-between gap-3 border-b border-line bg-bg px-5 py-4 sm:px-8 lg:px-14"
 >
   <a href="#hero" class="font-sora text-lg font-bold text-gold-text">{profile.initials}</a>
 
@@ -25,6 +26,7 @@ const navItems = [
       navItems.map((item) => (
         <a
           href={item.href}
+          data-en={item.en}
           class="whitespace-nowrap font-sora text-[11px] uppercase tracking-[0.07em] text-muted transition-colors hover:text-gold-text"
         >
           {item.label}
@@ -34,28 +36,33 @@ const navItems = [
   </nav>
 
   <div class="hidden items-center gap-3.5 lg:flex">
-    <div
-      class="flex items-center gap-1.5 rounded-full border border-line px-2.5 py-[5px] font-sora text-[10.5px] text-muted"
-    >
-      <span class="text-ink">FR</span><span>/</span><span>EN</span>
+    <div class="flex items-center gap-1 rounded-full border border-line px-2 py-[5px] font-sora text-[10.5px]">
+      <button type="button" data-lang-btn="fr" onclick="setLang('fr')" class="px-1 text-gold-text">FR</button>
+      <span class="text-muted">/</span>
+      <button type="button" data-lang-btn="en" onclick="setLang('en')" class="px-1 text-muted">EN</button>
     </div>
     <button
       type="button"
       data-theme-toggle
       aria-label="Changer de thème"
-      class="flex h-8 w-8 items-center justify-center rounded-full border border-line text-sm text-ink"
+      class="flex h-9 w-9 items-center justify-center rounded-full border border-line text-sm text-ink"
     >
       <span data-theme-glyph>☾</span>
     </button>
   </div>
 
   <!-- Mobile controls -->
-  <div class="flex items-center gap-3.5 lg:hidden">
+  <div class="flex items-center gap-2.5 lg:hidden">
+    <div class="flex items-center gap-1 rounded-full border border-line px-2 py-[6px] font-sora text-[11px]">
+      <button type="button" data-lang-btn="fr" onclick="setLang('fr')" class="px-1 text-gold-text">FR</button>
+      <span class="text-muted">/</span>
+      <button type="button" data-lang-btn="en" onclick="setLang('en')" class="px-1 text-muted">EN</button>
+    </div>
     <button
       type="button"
       data-theme-toggle
       aria-label="Changer de thème"
-      class="flex h-[34px] w-[34px] items-center justify-center rounded-full border border-line text-ink"
+      class="flex h-11 w-11 items-center justify-center rounded-full border border-line text-ink"
     >
       <span data-theme-glyph>☾</span>
     </button>
@@ -64,7 +71,7 @@ const navItems = [
       data-menu-toggle
       aria-label="Ouvrir le menu"
       aria-expanded="false"
-      class="flex h-[34px] w-[34px] items-center justify-center rounded-full border border-line"
+      class="flex h-11 w-11 items-center justify-center rounded-full border border-line"
     >
       <svg width="16" height="16" viewBox="0 0 18 18" aria-hidden="true">
         <line x1="2" y1="5" x2="16" y2="5" stroke="currentColor" class="text-ink" stroke-width="1.4" stroke-linecap="round"></line>
@@ -86,7 +93,8 @@ const navItems = [
       <a
         href={item.href}
         data-menu-link
-        class="border-b border-line py-3 font-sora text-[13px] text-muted transition-colors hover:text-gold-text"
+        data-en={item.en}
+        class="border-b border-line py-3.5 font-sora text-[14px] text-muted transition-colors hover:text-gold-text"
       >
         {item.label}
       </a>

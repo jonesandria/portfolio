@@ -23,7 +23,7 @@ export const projects: Project[] = [
     desc: 'Suivi du burnout et de la santé mentale : test MBI, tableau de bord, export PDF.',
     tags: ['Flutter', 'Firebase', 'Santé mentale'],
     placeholder: 'LumaCare — capture',
-    image: '',
+    image: "/images/Lumacare.png",
   },
   {
     name: 'Auralis OS',
@@ -32,7 +32,7 @@ export const projects: Project[] = [
     desc: 'Écosystème personnel intelligent pour organiser santé, apprentissage et projets.',
     tags: ['Flutter', 'IA', 'Architecture'],
     placeholder: 'Auralis OS — capture',
-    image: '',
+    image: "/images/Auralis.png",
   },
   {
     name: 'Bulletin scolaire',
@@ -41,7 +41,7 @@ export const projects: Project[] = [
     desc: 'Gestion des notes, classements et bulletins scolaires avec export PDF.',
     tags: ['Flutter', 'PDF', 'Base de données'],
     placeholder: 'Bulletin scolaire — capture',
-    image: '',
+    image: "/images/Bulletin.png",
   },
   {
     name: 'Photography',
@@ -50,6 +50,6 @@ export const projects: Project[] = [
     desc: 'Galerie et identité visuelle : portraits, voyages, nature et street photography.',
     tags: ['Portrait', 'Voyage', 'Street'],
     placeholder: 'Photography — capture',
-    image: '',
+    image: "/images/Photography.png",
   },
 ];

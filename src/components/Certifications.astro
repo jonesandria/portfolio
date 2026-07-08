@@ -1,16 +1,19 @@
 ---
 import { certifications } from '../data/certifications';
+import { ui, enData } from '../data/i18n';
+
+const certs = certifications.map((c, i) => ({ ...c, en: enData.certifications[i] }));
 ---
 
 <section id="certifications" class="border-t border-line px-5 py-16 sm:px-8 lg:px-14" data-reveal>
-  <p class="mb-8 font-playfair text-sm italic text-gold-text">— Formation &amp; Certifications —</p>
-  <div class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
+  <p class="mb-8 font-playfair text-sm italic text-gold-text" data-en={ui.eyebrow.certifications}>— Formation &amp; Certifications —</p>
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
     {
-      certifications.map((cert) => (
+      certs.map((cert) => (
         <article class="rounded-[14px] border border-line bg-surface p-5">
-          <h3 class="mb-2 font-sora text-[13.5px] font-semibold leading-[1.35] text-ink">{cert.title}</h3>
+          <h3 class="mb-2 font-sora text-[13.5px] font-semibold leading-[1.35] text-ink" data-en={cert.en.title}>{cert.title}</h3>
           <p class="font-inter text-[11.5px] text-muted">
-            {cert.org} · {cert.date}
+            {cert.org} · <span data-en={cert.en.date}>{cert.date}</span>
           </p>
         </article>
       ))
